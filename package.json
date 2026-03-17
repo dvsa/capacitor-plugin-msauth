@@ -1,6 +1,6 @@
 {
-  "name": "@recognizebv/capacitor-plugin-msauth",
-  "version": "3.7.0",
+  "name": "@dvsa/capacitor-plugin-msauth",
+  "version": "1.0.0",
   "description": "This plugin enables MSAL support for Capacitor.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -17,10 +17,10 @@
   "license": "LGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/recognizegroup/capacitor-plugin-msauth.git"
+    "url": "https://github.com/dvsa/capacitor-plugin-msauth.git"
   },
   "bugs": {
-    "url": "https://github.com/recognizegroup/capacitor-plugin-msauth/issues"
+    "url": "https://github.com/dvsa/capacitor-plugin-msauth/issues"
   },
   "keywords": [
     "capacitor",
@@ -38,7 +38,6 @@
     "verify:web": "npm run build",
     "lint": "biome check src",
     "lint:fix": "npm run lint -- --fix",
-    "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\" --plugin=prettier-plugin-java",
     "swiftlint": "node-swiftlint",
     "build": "npm run clean && tsc && rollup -c rollup.config.mjs",
@@ -54,7 +53,6 @@
     "@ionic/eslint-config": "^0.4.0",
     "@ionic/prettier-config": "^4.0.0",
     "@ionic/swiftlint-config": "^2.0.0",
-    "eslint": "9.26.0",
     "precommit": "^1.2.2",
     "prettier": "^3.4.2",
     "prettier-plugin-java": "^2.6.6",
