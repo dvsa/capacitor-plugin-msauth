@@ -76,6 +76,7 @@ import {Plugins} from '@capacitor/core';
 const {MsAuthPlugin} = Plugins;
 
 const result = await MsAuthPlugin.login({
+    isExpired: false,
     clientId: '<client id>',
     tenant: '<tenant, defaults to common>',
     domainHint: '<domainHint>',
@@ -87,6 +88,8 @@ const result = await MsAuthPlugin.login({
 
 const accessToken = result.accessToken;
 ```
+
+By default, the login function will attempt to acquire a token from the cache, and only if that fails will it attempt to refresh an expired token. By setting the `isExpired` parameter to `true`, you can force the plugin to skip checking the cache and go directly to refreshing the token.
 
 ### Logout
 ```typescript

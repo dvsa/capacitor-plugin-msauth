@@ -9,6 +9,7 @@ interface WebBaseOptions extends BaseOptions {
 
 interface WebLoginOptions extends WebBaseOptions {
   scopes: string[];
+  isExpired?: boolean;
 }
 
 type WebLogoutOptions = WebBaseOptions;
