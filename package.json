@@ -38,14 +38,13 @@
     "verify:web": "npm run build",
     "lint": "biome check src",
     "lint:fix": "npm run lint -- --fix",
-    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\" --plugin=prettier-plugin-java",
     "swiftlint": "node-swiftlint",
     "build": "npm run clean && tsc && rollup -c rollup.config.mjs",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "prepublishOnly": "npm run fmt && npm run lint && npm run build",
+    "prepublishOnly": "npm run lint && npm run build",
     "precommit": "npm run fmt && npm run lint && npm run build"
   },
   "devDependencies": {
