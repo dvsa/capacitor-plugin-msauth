@@ -1,0 +1,49 @@
+# Development files
+src/
+*.ts
+!*.d.ts
+tsconfig.json
+rollup.config.mjs
+
+# Test files
+**/__tests__/
+**/*.test.js
+**/*.spec.js
+
+# Build artifacts
+node_modules/
+.DS_Store
+*.log
+npm-debug.log*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Documentation (keep README.md)
+docs/
+*.md
+!README.md
+
+# Example files
+example-usage.ts
+examples/
+
+# Lock files
+package-lock.json
+yarn.lock
+
+# Cache
+.npm/
+.cache/

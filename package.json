@@ -1,7 +1,7 @@
 {
-  "name": "@recognizebv/capacitor-plugin-msauth",
-  "version": "3.6.2",
-  "description": "This plugin enables MSAL support for Capacitor.",
+  "name": "@dvsa/capacitor-plugin-msauth",
+  "version": "3.7.0",
+  "description": "MSAL support for Capacitor with additional forceRefresh functionality - Fork of @recognizebv/capacitor-plugin-msauth",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -13,14 +13,14 @@
     "ios/Plugin/",
     "RecognizebvCapacitorPluginMsauth.podspec"
   ],
-  "author": "Recognize",
+  "author": "DVSA (based on work by Recognize)",
   "license": "LGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/recognizegroup/capacitor-plugin-msauth.git"
+    "url": "https://github.com/dvsa/capacitor-plugin-msauth.git"
   },
   "bugs": {
-    "url": "https://github.com/recognizegroup/capacitor-plugin-msauth/issues"
+    "url": "https://github.com/dvsa/capacitor-plugin-msauth/issues"
   },
   "keywords": [
     "capacitor",
@@ -29,7 +29,10 @@
     "msal",
     "microsoft",
     "azure",
-    "authentication"
+    "authentication",
+    "forceRefresh",
+    "token",
+    "oauth"
   ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",

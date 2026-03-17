@@ -9,6 +9,7 @@ interface WebBaseOptions extends BaseOptions {
 
 interface WebLoginOptions extends WebBaseOptions {
   scopes: string[];
+  forceRefresh?: boolean;
 }
 
 type WebLogoutOptions = WebBaseOptions;
@@ -24,7 +25,7 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
     const context = this.createContext(options);
 
     try {
-      return await this.acquireTokenSilently(context, options.scopes).catch(() =>
+      return await this.acquireTokenSilently(context, options.scopes, options.forceRefresh).catch(() =>
         this.acquireTokenInteractively(context, options.scopes),
       );
     } catch (error) {
@@ -78,10 +79,15 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
     return { accessToken, idToken, scopes };
   }
 
-  private async acquireTokenSilently(context: PublicClientApplication, scopes: string[]): Promise<AuthResult> {
+  private async acquireTokenSilently(
+    context: PublicClientApplication,
+    scopes: string[],
+    forceRefresh?: boolean,
+  ): Promise<AuthResult> {
     const { accessToken, idToken } = await context.acquireTokenSilent({
       scopes,
       account: context.getAllAccounts()[0],
+      forceRefresh: forceRefresh ?? false,
     });
 
     return { accessToken, idToken, scopes };
