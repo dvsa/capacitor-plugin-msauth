@@ -36,7 +36,8 @@
     "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
-    "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
+    "lint": "biome check src",
+    "lint:fix": "npm run lint -- --fix",
     "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\" --plugin=prettier-plugin-java",
@@ -69,7 +70,9 @@
   "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",
   "dependencies": {
-    "@azure/msal-browser": "^2.32.2"
+    "@azure/msal-browser": "^2.32.2",
+    "@biomejs/biome": "^2.1.3",
+    "@dvsa/biome-config": "^1.0.0"
   },
   "eslintConfig": {
     "extends": "@ionic/eslint-config/recommended"
