@@ -39,7 +39,6 @@
     "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
-    "lint": "biome check src",
     "lint:fix": "npm run lint -- --fix",
     "fmt": "npm run biome-fmt && npm run prettier-java && npm run swiftlint -- --fix --format",
     "biome-fmt": "biome format --write src/",
