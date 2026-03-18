@@ -72,7 +72,9 @@ public class MsAuthPlugin extends Plugin {
                 }
             }
 
-            this.acquireToken(context, call.getArray("scopes").toList(), prompt, tokenResult -> {
+            boolean forceRefresh = call.getBoolean("forceRefresh", false);
+
+            this.acquireToken(context, call.getArray("scopes").toList(), prompt, forceRefresh, tokenResult -> {
                     if (tokenResult != null) {
                         JSObject result = new JSObject();
                         result.put("accessToken", tokenResult.getAccessToken());
@@ -138,6 +140,7 @@ public class MsAuthPlugin extends Plugin {
         ISingleAccountPublicClientApplication context,
         List<String> scopes,
         Prompt prompt,
+        boolean forceRefresh,
         final TokenResultCallback callback
     ) throws MsalException, InterruptedException {
         String authority = getAuthorityUrl(context);
@@ -149,7 +152,8 @@ public class MsAuthPlugin extends Plugin {
                 AcquireTokenSilentParameters.Builder builder = new AcquireTokenSilentParameters.Builder()
                     .withScopes(scopes)
                     .fromAuthority(authority)
-                    .forAccount(result.getCurrentAccount());
+                    .forAccount(result.getCurrentAccount())
+                    .forceRefresh(forceRefresh);
 
                 AcquireTokenSilentParameters parameters = builder.build();
                 IAuthenticationResult silentAuthResult = context.acquireTokenSilent(parameters);
