@@ -81,6 +81,9 @@
   "eslintConfig": {
     "extends": "@ionic/eslint-config/recommended"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "capacitor": {
     "ios": {
       "src": "ios"
