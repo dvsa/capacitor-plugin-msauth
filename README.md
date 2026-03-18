@@ -1,8 +1,9 @@
 # Capacitor Plugin MS auth
-This plugin contains an implementation of MSAL for Capacitor. 
+This plugin contains an implementation of MSAL for Capacitor. It is a forked version of [this](https://github.com/recognizegroup/capacitor-plugin-msauth) plugin, which has been 
+amended to include the ability to force a token refresh when calling the MSAL `aquireTokenSilent` metho via passing of a `forceRefresh` (boolean) parameter. 
 
 ## Installation
-* `yarn add @recognizebv/capacitor-plugin-msauth`
+* `npm install @dvsa/capacitor-plugin-msauth`
 * `npx cap sync`
 * Create an app registration
 * In the app registration, go to Authentication, and then Add platform, and then iOS/macOS
@@ -27,7 +28,7 @@ This plugin contains an implementation of MSAL for Capacitor.
     <string>msauthv3</string>
 </array>
 ```
-* (iOS) Add `import RecognizebvCapacitorPluginMsauth` to the top of the AppDelegate file to ensure that the library is linked
+* (iOS) Add `import DvsaCapacitorPluginMsauth` to the top of the AppDelegate file to ensure that the library is linked
 * (iOS) if your app's AppDelegate already implements a `application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool` function, you should add the following code inside this method:
 ```swift
 if MsAuthPlugin.checkAppOpen(url: url, options: options) == true {
@@ -101,12 +102,4 @@ await MsAuthPlugin.logout({
     domainHint: '<domainHint>',
     keyHash: '<Android only, the key hash as obtained above>',
 });
-```
-## MSAL Versions
-There are some scenarios where the default project may be generated in such a way which prevents a build from succeeding. To get around this, a variable has been exposed to allow users to configure the Microsoft Authentication library version. By setting the `recognizebvMSALVersion` variable in your root `build.gradle` you can override the default version used during dependency resolution. See this [issue](https://github.com/recognizegroup/capacitor-plugin-msauth/issues/42) for more details. Here's an example you can place in your root `build.gradle` file to override the MSAL version.
-
-```groovy
-ext {
-  recognizebvMSALVersion = '5.3.0' // This version fixed the open telemetry issue described in issue #42.
-}
 ```
