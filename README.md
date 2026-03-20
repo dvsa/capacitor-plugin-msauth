@@ -103,3 +103,34 @@ await MsAuthPlugin.logout({
     keyHash: '<Android only, the key hash as obtained above>',
 });
 ```
+
+## License and Attribution
+
+This project is licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0).
+
+### Original Work
+This is a derivative work based on the original [capacitor-plugin-msauth](https://github.com/recognizegroup/capacitor-plugin-msauth) by Recognize Group, which is also licensed under LGPL-3.0.
+
+### Copyright Notice
+- Copyright (C) 2021 Recognize Group (original work)
+- Copyright (C) 2026 DVSA (Driver and Vehicle Standards Agency) (derivative work)
+
+### Key Modifications in This Fork
+- Added `forceRefresh` parameter support to the `acquireTokenSilent` method
+- Enhanced token refresh capabilities
+- DVSA-specific optimizations and configurations
+
+### License Terms
+This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this library; if not, see <https://www.gnu.org/licenses/>.
+
+### LGPL-3.0 Compliance
+As required by the LGPL-3.0 license:
+- This work retains the original copyright notices
+- Source code is available under the same license terms
+- Any modifications are clearly documented
+- Users are free to modify and redistribute under LGPL-3.0 terms
+
