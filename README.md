@@ -84,11 +84,14 @@ const result = await MsAuthPlugin.login({
     keyHash: '<Android only, the key hash as obtained above>',
     authorityType: '<AAD/B2C/CIAM>',
     authorityUrl: '<To sign the user into a specific CIAM tenant, configure with a specific authority. For example: https://xxx.ciamlogin.com/dddd5555-eeee-6666-ffff-00001111aaaa>',
+      redirectURI: '<Optional web-only redirect URI used for interactive login (acquireTokenPopup)>',
     forceRefresh: '<Optional boolean, forces a fresh token instead of using cached token. Defaults to false>',
 });
 
 const accessToken = result.accessToken;
 ```
+
+`redirectURI` is supported in the web implementation for interactive login (`acquireTokenPopup`) and is ignored on Android and iOS.
 
 ### Logout
 ```typescript
@@ -116,9 +119,8 @@ This is a derivative work based on the original [capacitor-plugin-msauth](https:
 - Copyright (C) 2026 DVSA (Driver and Vehicle Standards Agency) (derivative work)
 
 ### Key Modifications in This Fork
-- Added `forceRefresh` parameter support to the `acquireTokenSilent` method
-- Enhanced token refresh capabilities
-- DVSA-specific optimizations and configurations
+- Added `forceRefresh` support to `login` options, passed through to MSAL `acquireTokenSilent`
+- Added optional `redirectURI` support to `login` options for web interactive sign-in (`acquireTokenPopup`) only
 
 ### License Terms
 This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.

@@ -3,13 +3,12 @@ import { WebPlugin } from "@capacitor/core";
 
 import type { BaseOptions, MsAuthPlugin } from "./definitions";
 
-interface WebBaseOptions extends BaseOptions {
-	redirectUri?: string;
-}
+type WebBaseOptions = BaseOptions;
 
 interface WebLoginOptions extends WebBaseOptions {
 	scopes: string[];
 	forceRefresh?: boolean;
+	redirectURI?: string;
 }
 
 type WebLogoutOptions = WebBaseOptions;
@@ -29,7 +28,13 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 				context,
 				options.scopes,
 				options.forceRefresh,
-			).catch(() => this.acquireTokenInteractively(context, options.scopes));
+			).catch(() =>
+				this.acquireTokenInteractively(
+					context,
+					options.scopes,
+					options.redirectURI,
+				),
+			);
 		} catch (error) {
 			console.error("MSAL: Error occurred while logging in", error);
 
@@ -60,7 +65,7 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 					options.authorityUrl ??
 					`https://login.microsoftonline.com/${options.tenant ?? "common"}`,
 				knownAuthorities: options.knownAuthorities,
-				redirectUri: options.redirectUri ?? this.getCurrentUrl(),
+				redirectUri: this.getCurrentUrl(),
 			},
 			cache: {
 				cacheLocation: "localStorage",
@@ -77,10 +82,12 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 	private async acquireTokenInteractively(
 		context: PublicClientApplication,
 		scopes: string[],
+		redirectURI?: string,
 	): Promise<AuthResult> {
 		const { accessToken, idToken } = await context.acquireTokenPopup({
 			scopes,
 			prompt: "select_account",
+			redirectUri: redirectURI,
 		});
 
 		return { accessToken, idToken, scopes };
