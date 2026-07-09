@@ -1,6 +1,6 @@
 {
   "name": "@dvsa/capacitor-plugin-msauth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MSAL support for Capacitor with additional forceRefresh functionality - Fork of @recognizebv/capacitor-plugin-msauth",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
