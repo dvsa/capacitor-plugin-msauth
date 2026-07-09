@@ -8,7 +8,7 @@ type WebBaseOptions = BaseOptions;
 interface WebLoginOptions extends WebBaseOptions {
 	scopes: string[];
 	forceRefresh?: boolean;
-	redirectURI?: string;
+	redirectUri?: string;
 }
 
 type WebLogoutOptions = WebBaseOptions;
@@ -32,7 +32,7 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 				this.acquireTokenInteractively(
 					context,
 					options.scopes,
-					options.redirectURI,
+					options.redirectUri,
 				),
 			);
 		} catch (error) {
@@ -82,12 +82,12 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 	private async acquireTokenInteractively(
 		context: PublicClientApplication,
 		scopes: string[],
-		redirectURI?: string,
+		redirectUri?: string,
 	): Promise<AuthResult> {
 		const { accessToken, idToken } = await context.acquireTokenPopup({
 			scopes,
 			prompt: "select_account",
-			redirectUri: redirectURI,
+			redirectUri: redirectUri ?? this.getCurrentUrl(),
 		});
 
 		return { accessToken, idToken, scopes };

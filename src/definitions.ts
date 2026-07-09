@@ -14,7 +14,7 @@ export interface LoginOptions extends BaseOptions {
 	scopes?: string[];
 	prompt?: "login" | "none" | "consent" | "create" | "select_account";
 	/** Web only: redirect URI override used for interactive login (acquireTokenPopup). */
-	redirectURI?: string;
+	redirectUri?: string;
 	/** Force refresh the access token, bypassing the cache. Defaults to false. */
 	forceRefresh?: boolean;
 }
