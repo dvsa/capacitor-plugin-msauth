@@ -11,8 +11,7 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "DvsaCapacitorPluginMsauth.podspec",
-    "NOTICE"
+    "DvsaCapacitorPluginMsauth.podspec"
   ],
   "author": "DVSA (based on work by Recognize)",
   "license": "LGPL-3.0",
