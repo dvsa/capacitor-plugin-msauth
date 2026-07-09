@@ -36,7 +36,14 @@ jobs:
       - name: Verify package contents
         run: npm publish --dry-run --access public
 
+      - name: Enforce default branch for real publish
+        if: ${{ !inputs.dry_run && github.ref_name != github.event.repository.default_branch }}
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          echo "Publishing is only allowed from the default branch (${DEFAULT_BRANCH}). Current branch: ${GITHUB_REF_NAME}."
+          exit 1
+
       - name: Publish to npm
         if: ${{ !inputs.dry_run }}
         run: npm publish --access public --provenance
-
