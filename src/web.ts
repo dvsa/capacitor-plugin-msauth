@@ -24,6 +24,14 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 		const context = this.createContext(options);
 
 		try {
+			const redirectResponse = await context.handleRedirectPromise();
+
+			if (redirectResponse?.accessToken && redirectResponse.idToken) {
+				const { accessToken, idToken, scopes } = redirectResponse;
+
+				return { accessToken, idToken, scopes };
+			}
+
 			return await this.acquireTokenSilently(
 				context,
 				options.scopes,
@@ -84,13 +92,13 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 		scopes: string[],
 		redirectUri?: string,
 	): Promise<AuthResult> {
-		const { accessToken, idToken } = await context.acquireTokenPopup({
+		await context.acquireTokenRedirect({
 			scopes,
 			prompt: "select_account",
 			redirectUri: redirectUri ?? this.getCurrentUrl(),
 		});
 
-		return { accessToken, idToken, scopes };
+		throw new Error("MSAL: Interactive login redirect initiated.");
 	}
 
 	private async acquireTokenSilently(
