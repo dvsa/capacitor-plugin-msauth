@@ -24,6 +24,16 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 		const context = this.createContext(options);
 
 		try {
+			const redirectResult = await context.handleRedirectPromise();
+
+			if (redirectResult?.accessToken && redirectResult.idToken) {
+				return {
+					accessToken: redirectResult.accessToken,
+					idToken: redirectResult.idToken,
+					scopes: redirectResult.scopes,
+				};
+			}
+
 			return await this.acquireTokenSilently(
 				context,
 				options.scopes,
@@ -42,18 +52,46 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 		}
 	}
 
-	logout(options: WebLogoutOptions): Promise<void> {
+	async logout(options: WebLogoutOptions): Promise<void> {
 		const context = this.createContext(options);
+		const account = context.getAllAccounts()[0];
 
-		if (!context.getAllAccounts()[0]) {
-			return Promise.reject(new Error("Nothing to sign out from."));
-		} else {
-			return context.logoutPopup();
+		// Ensure local token cache is cleared even if there is no signed-in account.
+		this.clearMsalCache();
+
+		if (!account) {
+			return;
 		}
+
+		await context.logoutRedirect({
+			account,
+			postLogoutRedirectUri: this.getCurrentUrl(),
+		});
 	}
 
 	logoutAll(options: WebLogoutOptions): Promise<void> {
 		return this.logout(options);
+	}
+
+	private clearMsalCache(): void {
+		const clearStorage = (storage: Storage) => {
+			const keysToRemove: string[] = [];
+
+			for (let index = 0; index < storage.length; index += 1) {
+				const key = storage.key(index);
+
+				if (key?.startsWith("msal.")) {
+					keysToRemove.push(key);
+				}
+			}
+
+			for (const key of keysToRemove) {
+				storage.removeItem(key);
+			}
+		};
+
+		clearStorage(window.localStorage);
+		clearStorage(window.sessionStorage);
 	}
 
 	private createContext(options: WebBaseOptions) {
@@ -84,13 +122,15 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 		scopes: string[],
 		redirectUri?: string,
 	): Promise<AuthResult> {
-		const { accessToken, idToken } = await context.acquireTokenPopup({
+		await context.acquireTokenRedirect({
 			scopes,
 			prompt: "select_account",
 			redirectUri: redirectUri ?? this.getCurrentUrl(),
 		});
 
-		return { accessToken, idToken, scopes };
+		throw new Error(
+			"MSAL redirect started. Call login again after returning to the app.",
+		);
 	}
 
 	private async acquireTokenSilently(
