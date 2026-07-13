@@ -30,7 +30,7 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 				return {
 					accessToken: redirectResult.accessToken,
 					idToken: redirectResult.idToken,
-					scopes: redirectResult.scopes,
+					scopes: options.scopes,
 				};
 			}
 
