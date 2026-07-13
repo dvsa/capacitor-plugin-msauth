@@ -137,9 +137,8 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 			redirectUri: redirectUri ?? this.getCurrentUrl(),
 		});
 
-		throw new Error(
-			"MSAL redirect started. Call login again after returning to the app.",
-		);
+		// Redirect-based auth navigates away; this call will complete after the app returns and `handleRedirectPromise()` is processed.
+		return new Promise<AuthResult>(() => undefined);
 	}
 
 	private async acquireTokenSilently(
