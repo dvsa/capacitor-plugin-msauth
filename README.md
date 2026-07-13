@@ -93,6 +93,7 @@ const accessToken = result.accessToken;
 
 `redirectUri` is supported in the web implementation for interactive login (`acquireTokenRedirect`) and is ignored on Android and iOS.
 
+On web, interactive login is redirect-based: the first `login()` call may redirect the browser and will not return tokens until the app loads again and `login()` is called to process the redirect result.
 ### Logout
 ```typescript
 import {Plugins} from '@capacitor/core';
