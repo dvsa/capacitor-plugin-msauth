@@ -84,15 +84,16 @@ const result = await MsAuthPlugin.login({
     keyHash: '<Android only, the key hash as obtained above>',
     authorityType: '<AAD/B2C/CIAM>',
     authorityUrl: '<To sign the user into a specific CIAM tenant, configure with a specific authority. For example: https://xxx.ciamlogin.com/dddd5555-eeee-6666-ffff-00001111aaaa>', 
-    redirectUri: '<Optional web-only redirect URI used for interactive login (acquireTokenPopup)>',
+    redirectUri: '<Optional web-only redirect URI used for interactive login (acquireTokenRedirect)>',
     forceRefresh: '<Optional boolean, forces a fresh token instead of using cached token. Defaults to false>',
 });
 
 const accessToken = result.accessToken;
 ```
 
-`redirectUri` is supported in the web implementation for interactive login (`acquireTokenPopup`) and is ignored on Android and iOS.
+`redirectUri` is supported in the web implementation for interactive login (`acquireTokenRedirect`) and is ignored on Android and iOS.
 
+On web, interactive login is redirect-based: the first `login()` call may redirect the browser and will not return tokens until the app loads again and `login()` is called to process the redirect result.
 ### Logout
 ```typescript
 import {Plugins} from '@capacitor/core';
@@ -107,6 +108,8 @@ await MsAuthPlugin.logout({
 });
 ```
 
+On web, logout now uses redirect-based sign-out and clears the local MSAL token cache before redirecting.
+
 ## License and Attribution
 
 This project is licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0).
@@ -120,7 +123,7 @@ This is a derivative work based on the original [capacitor-plugin-msauth](https:
 
 ### Key Modifications in This Fork
 - Added `forceRefresh` support to `login` options, passed through to MSAL `acquireTokenSilent`
-- Added optional `redirectUri` support to `login` options for web interactive sign-in (`acquireTokenPopup`) only
+- Added optional `redirectUri` support to `login` options for web interactive sign-in (`acquireTokenRedirect`) only
 
 ### License Terms
 This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
