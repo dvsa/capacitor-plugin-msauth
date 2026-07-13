@@ -90,8 +90,17 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 			}
 		};
 
-		clearStorage(window.localStorage);
-		clearStorage(window.sessionStorage);
+		try {
+			clearStorage(window.localStorage);
+		} catch (error) {
+			console.warn("MSAL: Failed to clear localStorage cache", error);
+		}
+
+		try {
+			clearStorage(window.sessionStorage);
+		} catch (error) {
+			console.warn("MSAL: Failed to clear sessionStorage cache", error);
+		}
 	}
 
 	private createContext(options: WebBaseOptions) {
