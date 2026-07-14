@@ -4,7 +4,7 @@ amended to include the ability to force a token refresh when calling the MSAL `a
 
 ## Installation
 ### Requirements
-- Node.js 24 or newer (the repo enforces this via `engines`, `preinstall`, and `.npmrc`)
+- Node.js 24 or newer (the repo enforces this via `engines`, `.npmrc`, and `.nvmrc`)
 
 * `npm install @dvsa/capacitor-plugin-msauth`
 * `npx cap sync`
