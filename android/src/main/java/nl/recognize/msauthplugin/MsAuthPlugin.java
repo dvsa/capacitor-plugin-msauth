@@ -74,19 +74,19 @@ public class MsAuthPlugin extends Plugin {
 
             boolean forceRefresh = call.getBoolean("forceRefresh", false);
 
-            this.acquireToken(context, call.getArray("scopes").toList(), prompt, forceRefresh, tokenResult -> {
-                    if (tokenResult != null) {
-                        JSObject result = new JSObject();
-                        result.put("accessToken", tokenResult.getAccessToken());
-                        result.put("idToken", tokenResult.getIdToken());
-                        JSONArray scopes = new JSONArray(Arrays.asList(tokenResult.getScopes()));
-                        result.put("scopes", scopes);
+            this.acquireToken(context, call.getArray("scopes").toList(), prompt, forceRefresh, (tokenResult) -> {
+                if (tokenResult != null) {
+                    JSObject result = new JSObject();
+                    result.put("accessToken", tokenResult.getAccessToken());
+                    result.put("idToken", tokenResult.getIdToken());
+                    JSONArray scopes = new JSONArray(Arrays.asList(tokenResult.getScopes()));
+                    result.put("scopes", scopes);
 
-                        call.resolve(result);
-                    } else {
-                        call.reject("Unable to obtain access token");
-                    }
-                });
+                    call.resolve(result);
+                } else {
+                    call.reject("Unable to obtain access token");
+                }
+            });
         } catch (Exception ex) {
             Logger.error("Unable to login: " + ex.getMessage(), ex);
             call.reject("Unable to fetch access token.");
@@ -252,7 +252,7 @@ public class MsAuthPlugin extends Plugin {
         String keyHash,
         Boolean brokerRedirectUriRegistered
     ) throws MsalException, InterruptedException, IOException, JSONException {
-        String tenantId = (tenant != null ? tenant : "common");
+        String tenantId = tenant != null ? tenant : "common";
         String authorityUrl = customAuthorityUrl != null ? customAuthorityUrl : "https://login.microsoftonline.com/" + tenantId;
         String urlEncodedKeyHash = URLEncoder.encode(keyHash, "UTF-8");
         String redirectUri = "msauth://" + getActivity().getApplicationContext().getPackageName() + "/" + urlEncodedKeyHash;
@@ -264,7 +264,7 @@ public class MsAuthPlugin extends Plugin {
             case AAD:
                 authorityConfig.put("type", AuthorityType.AAD.name());
                 authorityConfig.put("authority_url", authorityUrl);
-                authorityConfig.put("audience", (new JSONObject()).put("type", "AzureADMultipleOrgs").put("tenant_id", tenantId));
+                authorityConfig.put("audience", new JSONObject().put("type", "AzureADMultipleOrgs").put("tenant_id", tenantId));
                 configFile.put("broker_redirect_uri_registered", brokerRedirectUriRegistered);
                 break;
             case B2C:
@@ -282,7 +282,7 @@ public class MsAuthPlugin extends Plugin {
         configFile.put("authorization_user_agent", "DEFAULT");
         configFile.put("redirect_uri", redirectUri);
         configFile.put("account_mode", "SINGLE");
-        configFile.put("authorities", (new JSONArray()).put(authorityConfig));
+        configFile.put("authorities", new JSONArray().put(authorityConfig));
 
         File config = writeJSONObjectConfig(configFile);
         ISingleAccountPublicClientApplication app = publicClientApplicationFactory.createSingleAccountPublicClientApplication(
