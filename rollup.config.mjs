@@ -7,6 +7,8 @@ export default {
       name: 'capacitorMsAuth',
       globals: {
         '@capacitor/core': 'capacitorExports',
+        // Keep MSAL external in browser bundles; host apps provide it via dependency resolution.
+        '@azure/msal-browser': 'msalBrowser',
       },
       sourcemap: true,
       inlineDynamicImports: true,
@@ -18,5 +20,6 @@ export default {
       inlineDynamicImports: true,
     },
   ],
-  external: ['@capacitor/core'],
+  // Do not inline runtime peer/runtime deps into the plugin bundle.
+  external: ['@capacitor/core', '@azure/msal-browser'],
 };

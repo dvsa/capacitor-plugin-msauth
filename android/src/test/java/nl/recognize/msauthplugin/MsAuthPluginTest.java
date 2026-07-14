@@ -96,18 +96,19 @@ class MsAuthPluginTest {
         // Setup plugin call
         PluginCall pluginCallMock = mock(PluginCall.class);
         initializePluginCallMockWithDefaults(pluginCallMock);
-        IAuthenticationResult result = createAuthenticationResult(
-            "access-token",
-            ID_TOKEN,
-            new String[] { "mocked-scope", "openid", "profile" }
-        );
+        IAuthenticationResult result = createAuthenticationResult("access-token", ID_TOKEN, new String[] {
+            "mocked-scope",
+            "openid",
+            "profile"
+        });
         ICurrentAccountResult currentAccountResult = new CurrentAccountResult(result.getAccount(), null, true);
         when(singleAccountPublicClientApplication.getCurrentAccount()).thenReturn(currentAccountResult);
 
         when(
             singleAccountPublicClientApplication.acquireTokenSilent(
                 argThat(
-                    parameters -> parameters.getScopes().equals(List.of("mocked-scope")) && parameters.getAuthority().equals(AUTHORITY_URL)
+                    (parameters) ->
+                        parameters.getScopes().equals(List.of("mocked-scope")) && parameters.getAuthority().equals(AUTHORITY_URL)
                 )
             )
         ).thenReturn(result);
@@ -124,14 +125,14 @@ class MsAuthPluginTest {
         assertEquals(ID_TOKEN, resolve.getString("idToken"));
 
         verify(singleAccountPublicClientApplication).acquireTokenSilent(
-            argThat(parameters -> parameters.getAuthority().equals(AUTHORITY_URL))
+            argThat((parameters) -> parameters.getAuthority().equals(AUTHORITY_URL))
         );
     }
 
     private void initializePluginCallMockWithDefaults(PluginCall pluginCallMock) throws JSONException {
         when(pluginCallMock.getArray("scopes")).thenReturn(new JSArray(new String[] { "mocked-scope" }));
         when(pluginCallMock.getString(any())).thenAnswer(
-            (Answer<String>) invocation -> {
+            (Answer<String>) (invocation) -> {
                 switch (invocation.getArgument(0).toString()) {
                     case "clientId":
                         return CLIENT_ID;
