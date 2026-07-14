@@ -3,6 +3,9 @@ This plugin contains an implementation of MSAL for Capacitor. It is a forked ver
 amended to include the ability to force a token refresh when calling the MSAL `aquireTokenSilent` metho via passing of a `forceRefresh` (boolean) parameter. 
 
 ## Installation
+### Requirements
+- Node.js 24 or newer (the repo enforces this via `engines`, `.npmrc`, and `.nvmrc`)
+
 * `npm install @dvsa/capacitor-plugin-msauth`
 * `npx cap sync`
 * Create an app registration
