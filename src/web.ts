@@ -1,7 +1,8 @@
-import { PublicClientApplication } from "@azure/msal-browser";
-import { WebPlugin } from "@capacitor/core";
+// biome-ignore-all lint/suspicious/noConsole: Logging is helpful here
+import { PublicClientApplication } from '@azure/msal-browser';
+import { WebPlugin } from '@capacitor/core';
 
-import type { BaseOptions, MsAuthPlugin } from "./definitions";
+import type { BaseOptions, MsAuthPlugin } from './definitions';
 
 type WebBaseOptions = BaseOptions;
 
@@ -34,19 +35,11 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 				};
 			}
 
-			return await this.acquireTokenSilently(
-				context,
-				options.scopes,
-				options.forceRefresh,
-			).catch(() =>
-				this.acquireTokenInteractively(
-					context,
-					options.scopes,
-					options.redirectUri,
-				),
+			return await this.acquireTokenSilently(context, options.scopes, options.forceRefresh).catch(() =>
+				this.acquireTokenInteractively(context, options.scopes, options.redirectUri)
 			);
 		} catch (error) {
-			console.error("MSAL: Error occurred while logging in", error);
+			console.error('MSAL: Error occurred while logging in', error);
 
 			throw error;
 		}
@@ -80,7 +73,7 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 			for (let index = 0; index < storage.length; index += 1) {
 				const key = storage.key(index);
 
-				if (key?.startsWith("msal.")) {
+				if (key?.startsWith('msal.')) {
 					keysToRemove.push(key);
 				}
 			}
@@ -93,13 +86,13 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 		try {
 			clearStorage(window.localStorage);
 		} catch (error) {
-			console.warn("MSAL: Failed to clear localStorage cache", error);
+			console.warn('MSAL: Failed to clear localStorage cache', error);
 		}
 
 		try {
 			clearStorage(window.sessionStorage);
 		} catch (error) {
-			console.warn("MSAL: Failed to clear sessionStorage cache", error);
+			console.warn('MSAL: Failed to clear sessionStorage cache', error);
 		}
 	}
 
@@ -108,14 +101,12 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 			auth: {
 				clientId: options.clientId,
 				domainHint: options.domainHint,
-				authority:
-					options.authorityUrl ??
-					`https://login.microsoftonline.com/${options.tenant ?? "common"}`,
+				authority: options.authorityUrl ?? `https://login.microsoftonline.com/${options.tenant ?? 'common'}`,
 				knownAuthorities: options.knownAuthorities,
 				redirectUri: this.getCurrentUrl(),
 			},
 			cache: {
-				cacheLocation: "localStorage",
+				cacheLocation: 'localStorage',
 			},
 		};
 
@@ -129,11 +120,11 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 	private async acquireTokenInteractively(
 		context: PublicClientApplication,
 		scopes: string[],
-		redirectUri?: string,
+		redirectUri?: string
 	): Promise<AuthResult> {
 		await context.acquireTokenRedirect({
 			scopes,
-			prompt: "select_account",
+			prompt: 'select_account',
 			redirectUri: redirectUri ?? this.getCurrentUrl(),
 		});
 
@@ -144,7 +135,7 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 	private async acquireTokenSilently(
 		context: PublicClientApplication,
 		scopes: string[],
-		forceRefresh?: boolean,
+		forceRefresh?: boolean
 	): Promise<AuthResult> {
 		const { accessToken, idToken } = await context.acquireTokenSilent({
 			scopes,
