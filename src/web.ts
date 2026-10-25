@@ -1,5 +1,11 @@
 // biome-ignore-all lint/suspicious/noConsole: Logging is helpful here
-import { PublicClientApplication } from '@azure/msal-browser';
+import {
+	BrowserCacheLocation,
+	CacheLookupPolicy,
+	type Configuration,
+	createStandardPublicClientApplication,
+	type IPublicClientApplication,
+} from '@azure/msal-browser';
 import { WebPlugin } from '@capacitor/core';
 
 import type { BaseOptions, MsAuthPlugin } from './definitions';
@@ -22,7 +28,7 @@ interface AuthResult {
 
 export class MsAuth extends WebPlugin implements MsAuthPlugin {
 	async login(options: WebLoginOptions): Promise<AuthResult> {
-		const context = this.createContext(options);
+		const context = await this.createContext(options);
 
 		try {
 			const redirectResult = await context.handleRedirectPromise();
@@ -36,7 +42,7 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 			}
 
 			return await this.acquireTokenSilently(context, options.scopes, options.forceRefresh).catch(() =>
-				this.acquireTokenInteractively(context, options.scopes, options.redirectUri)
+				this.acquireTokenInteractively(context, options.scopes, options.redirectUri, options.domainHint)
 			);
 		} catch (error) {
 			console.error('MSAL: Error occurred while logging in', error);
@@ -46,11 +52,11 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 	}
 
 	async logout(options: WebLogoutOptions): Promise<void> {
-		const context = this.createContext(options);
+		const context = await this.createContext(options);
 		const account = context.getAllAccounts()[0];
 
 		// Ensure local token cache is cleared even if there is no signed-in account.
-		this.clearMsalCache();
+		await context.clearCache();
 
 		if (!account) {
 			return;
@@ -66,51 +72,21 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 		return this.logout(options);
 	}
 
-	private clearMsalCache(): void {
-		const clearStorage = (storage: Storage) => {
-			const keysToRemove: string[] = [];
-
-			for (let index = 0; index < storage.length; index += 1) {
-				const key = storage.key(index);
-
-				if (key?.startsWith('msal.')) {
-					keysToRemove.push(key);
-				}
-			}
-
-			for (const key of keysToRemove) {
-				storage.removeItem(key);
-			}
-		};
-
-		try {
-			clearStorage(window.localStorage);
-		} catch (error) {
-			console.warn('MSAL: Failed to clear localStorage cache', error);
-		}
-
-		try {
-			clearStorage(window.sessionStorage);
-		} catch (error) {
-			console.warn('MSAL: Failed to clear sessionStorage cache', error);
-		}
-	}
-
-	private createContext(options: WebBaseOptions) {
-		const config = {
+	private createContext(options: WebBaseOptions): Promise<IPublicClientApplication> {
+		const config: Configuration = {
 			auth: {
 				clientId: options.clientId,
-				domainHint: options.domainHint,
 				authority: options.authorityUrl ?? `https://login.microsoftonline.com/${options.tenant ?? 'common'}`,
 				knownAuthorities: options.knownAuthorities,
 				redirectUri: this.getCurrentUrl(),
 			},
 			cache: {
-				cacheLocation: 'localStorage',
+				cacheLocation: BrowserCacheLocation.LocalStorage,
 			},
 		};
 
-		return new PublicClientApplication(config);
+		// MSAL v3+ must be initialised before use; this returns an initialised instance.
+		return createStandardPublicClientApplication(config);
 	}
 
 	private getCurrentUrl(): string {
@@ -118,14 +94,16 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 	}
 
 	private async acquireTokenInteractively(
-		context: PublicClientApplication,
+		context: IPublicClientApplication,
 		scopes: string[],
-		redirectUri?: string
+		redirectUri?: string,
+		domainHint?: string
 	): Promise<AuthResult> {
 		await context.acquireTokenRedirect({
 			scopes,
 			prompt: 'select_account',
 			redirectUri: redirectUri ?? this.getCurrentUrl(),
+			domainHint,
 		});
 
 		// Redirect-based auth navigates away; this call will complete after the app returns and `handleRedirectPromise()` is processed.
@@ -133,14 +111,16 @@ export class MsAuth extends WebPlugin implements MsAuthPlugin {
 	}
 
 	private async acquireTokenSilently(
-		context: PublicClientApplication,
+		context: IPublicClientApplication,
 		scopes: string[],
 		forceRefresh?: boolean
 	): Promise<AuthResult> {
 		const { accessToken, idToken } = await context.acquireTokenSilent({
 			scopes,
 			account: context.getAllAccounts()[0],
-			forceRefresh: forceRefresh ?? false,
+			// Never fall back to hidden-iframe renewal: since MSAL v5 it needs a redirect bridge page in the host app.
+			// If the refresh token can't be used, this fails fast and login() falls back to the redirect flow.
+			cacheLookupPolicy: forceRefresh ? CacheLookupPolicy.RefreshToken : CacheLookupPolicy.AccessTokenAndRefreshToken,
 		});
 
 		return { accessToken, idToken, scopes };
