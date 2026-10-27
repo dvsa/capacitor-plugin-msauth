@@ -1,1 +1,1 @@
-npm run verify && npm run prepublishOnly
+npm run lint && npm run verify && npm run prepublishOnly

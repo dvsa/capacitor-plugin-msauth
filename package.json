@@ -1,6 +1,6 @@
 {
   "name": "@dvsa/capacitor-plugin-msauth",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "MSAL support for Capacitor with additional forceRefresh functionality - Fork of @recognizebv/capacitor-plugin-msauth",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -42,6 +42,7 @@
     "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
+    "lint": "biome check src/",
     "lint:fix": "npm run lint -- --fix",
     "fmt": "npm run biome-fmt && npm run prettier-java && npm run swiftlint -- --fix --format",
     "biome-fmt": "biome format --write src/",
@@ -53,7 +54,6 @@
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run fmt && npm run build",
-    "precommit": "npm run fmt && npm run lint && npm run build",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -66,7 +66,6 @@
     "@ionic/prettier-config": "^4.0.0",
     "@ionic/swiftlint-config": "^2.0.0",
     "husky": "^9.1.7",
-    "precommit": "^1.2.2",
     "prettier": "^3.6.2",
     "prettier-plugin-java": "^2.7.7",
     "rimraf": "^6.1.0",
@@ -95,10 +94,5 @@
     "android": {
       "src": "android"
     }
-  },
-  "precommit": {
-    "tasks": [
-      "npm run precommit"
-    ]
   }
 }
