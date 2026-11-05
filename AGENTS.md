@@ -8,11 +8,11 @@
 - Public API is defined in `src/definitions.ts` (`login`, `logout`, `logoutAll`) and registered in `src/index.ts`.
 - Web path (`src/web.ts`): `handleRedirectPromise()` -> silent token attempt -> interactive redirect fallback (`acquireTokenRedirect`).
 - Android path (`android/src/main/java/nl/recognize/msauthplugin/MsAuthPlugin.java`): build runtime MSAL JSON config -> create `ISingleAccountPublicClientApplication` -> silent-first token flow -> interactive fallback.
-- iOS path (`ios/Sources/MsAuthPlugin/Plugin.swift`): create `MSALPublicClientApplication` -> resolve current account (multi-account aware) -> silent-first -> interactive fallback.
+- iOS path (`ios/Sources/DvsaCapacitorPluginMsauth/Plugin.swift`): create `MSALPublicClientApplication` -> resolve current account (multi-account aware) -> silent-first -> interactive fallback.
 - `logoutAll` delegates to `logout` on web/Android, but signs out each account on iOS.
 
 ## Build, verify, and formatting workflow
-- Install deps: `npm install` (root). CocoaPods is only needed by consumer apps that use Pods.
+- Install deps: `npm install` (root). No CocoaPods: iOS is Swift Package Manager only (since v4).
 - Main build artifact flow: `npm run build` (`tsc` to `dist/esm`, then Rollup to `dist/plugin.js` + `dist/plugin.cjs.js`).
 - iOS verification: `npm run verify:ios` (runs `xcodebuild` against root `Package.swift`, scheme `DvsaCapacitorPluginMsauth`).
 - Android verification: `npm run verify:android` (Gradle clean/build/test in `android/`).
@@ -30,7 +30,8 @@
 ## Integration points and dependencies
 - NPM runtime dependency: `@azure/msal-browser` (web implementation in `src/web.ts`).
 - Android dependency: `com.microsoft.identity.client:msal` in `android/build.gradle`; includes required Microsoft Duo Maven feed.
-- iOS dependency: `MSAL` declared twice, keep in sync: pod in `DvsaCapacitorPluginMsauth.podspec` and SwiftPM package in root `Package.swift` (deployment target iOS 15). iOS supports both CocoaPods and SPM; sources live in `ios/Sources/MsAuthPlugin`.
+- iOS dependency: `MSAL` SwiftPM package (`microsoft-authentication-library-for-objc`) in root `Package.swift` (deployment target iOS 15). iOS is SPM-only; no podspec. Sources live in `ios/Sources/DvsaCapacitorPluginMsauth`.
+- Swift package, product and target are all named `DvsaCapacitorPluginMsauth`: the Capacitor CLI derives this name from the npm package name, and consumer AppDelegates `import DvsaCapacitorPluginMsauth`. Do not rename.
 - Consumer app setup is required for URL schemes and platform manifest/plist entries; use `README.md` as source of truth.
 
 ## Contributor gotchas

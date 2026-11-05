@@ -1,6 +1,6 @@
 import XCTest
 import Capacitor
-@testable import MsAuthPlugin
+@testable import DvsaCapacitorPluginMsauth
 
 class PluginTests: XCTestCase {
 }

@@ -7,7 +7,6 @@ dist/
 node_modules/
 
 # iOS files
-Pods
 Build
 xcuserdata
 
@@ -69,6 +68,5 @@ DerivedData/
 .swiftpm/configuration/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
-Podfile.lock
 Package.resolved
 /.build

@@ -7,7 +7,7 @@ let package = Package(
     products: [
         .library(
             name: "DvsaCapacitorPluginMsauth",
-            targets: ["MsAuthPlugin"])
+            targets: ["DvsaCapacitorPluginMsauth"])
     ],
     dependencies: [
         .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", from: "8.0.0"),
@@ -15,16 +15,16 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "MsAuthPlugin",
+            name: "DvsaCapacitorPluginMsauth",
             dependencies: [
                 .product(name: "Capacitor", package: "capacitor-swift-pm"),
                 .product(name: "Cordova", package: "capacitor-swift-pm"),
                 .product(name: "MSAL", package: "microsoft-authentication-library-for-objc")
             ],
-            path: "ios/Sources/MsAuthPlugin"),
+            path: "ios/Sources/DvsaCapacitorPluginMsauth"),
         .testTarget(
-            name: "MsAuthPluginTests",
-            dependencies: ["MsAuthPlugin"],
-            path: "ios/Tests/MsAuthPluginTests")
+            name: "DvsaCapacitorPluginMsauthTests",
+            dependencies: ["DvsaCapacitorPluginMsauth"],
+            path: "ios/Tests/DvsaCapacitorPluginMsauthTests")
     ]
 )

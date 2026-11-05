@@ -1,6 +1,6 @@
 {
   "name": "@dvsa/capacitor-plugin-msauth",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "MSAL support for Capacitor with additional forceRefresh functionality - Fork of @recognizebv/capacitor-plugin-msauth",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -12,8 +12,7 @@
     "dist/",
     "ios/Sources",
     "ios/Tests",
-    "Package.swift",
-    "DvsaCapacitorPluginMsauth.podspec"
+    "Package.swift"
   ],
   "author": "DVSA (based on work by Recognize)",
   "license": "LGPL-3.0",
