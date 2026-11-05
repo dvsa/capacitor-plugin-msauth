@@ -1,6 +1,6 @@
 {
   "name": "@dvsa/capacitor-plugin-msauth",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "MSAL support for Capacitor with additional forceRefresh functionality - Fork of @recognizebv/capacitor-plugin-msauth",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -10,8 +10,9 @@
     "android/src/main/",
     "android/build.gradle",
     "dist/",
-    "ios/Plugin/",
-    "DvsaCapacitorPluginMsauth.podspec"
+    "ios/Sources",
+    "ios/Tests",
+    "Package.swift"
   ],
   "author": "DVSA (based on work by Recognize)",
   "license": "LGPL-3.0",
@@ -39,7 +40,7 @@
   ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:web",
-    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS && cd ..",
+    "verify:ios": "xcodebuild -scheme DvsaCapacitorPluginMsauth -destination generic/platform=iOS",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
     "lint": "biome check src/",

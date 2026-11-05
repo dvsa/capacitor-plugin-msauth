@@ -9,8 +9,9 @@ This guide explains how to control which files are published to npm for your Cap
   "android/src/main/",
   "android/build.gradle", 
   "dist/",
-  "ios/Plugin/",
-  "RecognizebvCapacitorPluginMsauth.podspec"
+  "ios/Sources",
+  "ios/Tests",
+  "Package.swift"
 ]
 ```
 
@@ -26,8 +27,8 @@ This guide explains how to control which files are published to npm for your Cap
 - `android/src/main/` - Android native source code
 - `android/build.gradle` - Android build configuration
 - `dist/` - All compiled TypeScript output
-- `ios/Plugin/` - iOS native source code
-- `DvsaCapacitorPluginMsauth.podspec` - iOS CocoaPods spec
+- `ios/Sources`, `ios/Tests` - iOS native source code and tests
+- `Package.swift` - iOS Swift Package Manager manifest (iOS is SPM-only; no podspec)
 
 ### ❌ **Always Excluded**
 - `node_modules/` 
@@ -46,11 +47,8 @@ This guide explains how to control which files are published to npm for your Cap
   "dist/esm/",
   "dist/plugin.js",
   "dist/plugin.cjs.js",
-  "ios/Plugin/*.swift",
-  "ios/Plugin/*.h",
-  "ios/Plugin/*.m",
-  "ios/Plugin/Info.plist",
-  "*.podspec"
+  "ios/Sources/**/*.swift",
+  "Package.swift"
 ]
 ```
 
@@ -60,8 +58,8 @@ This guide explains how to control which files are published to npm for your Cap
   "android/src/main/**/*",
   "android/build.gradle",
   "dist/**/*",
-  "ios/Plugin/**/*", 
-  "*.podspec"
+  "ios/Sources/**/*",
+  "Package.swift"
 ]
 ```
 
@@ -74,10 +72,7 @@ This guide explains how to control which files are published to npm for your Cap
   "dist/**/*.js",
   "dist/**/*.d.ts", 
   "ios/**/*.swift",
-  "ios/**/*.h",
-  "ios/**/*.m",
-  "ios/**/*.plist",
-  "*.podspec"
+  "Package.swift"
 ]
 ```
 

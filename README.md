@@ -5,9 +5,20 @@ amended to include the ability to force a token refresh when calling the MSAL `a
 ## Installation
 ### Requirements
 - Node.js 24 or newer (the repo enforces this via `engines`, `.npmrc`, and `.nvmrc`)
+- Capacitor 8
+- iOS: Swift Package Manager based iOS project (CocoaPods is not supported from v4), iOS 15+
+
+### Upgrading from v3 (CocoaPods) to v4 (SPM)
+v4 is a breaking change for iOS: the CocoaPods podspec has been removed and the plugin is distributed as a Swift package only.
+1. Migrate your app's iOS project to SPM: `npx cap spm-migration-assistant` (see the [Capacitor SPM migration guide](https://capacitorjs.com/docs/ios/spm)).
+2. `npm install @dvsa/capacitor-plugin-msauth@4` and `npx cap sync ios`.
+3. Confirm `DvsaCapacitorPluginMsauth` appears in `ios/App/CapApp-SPM/Package.swift`. The AppDelegate `import DvsaCapacitorPluginMsauth` and `MsAuthPlugin.checkAppOpen(...)` code is unchanged.
+
+Android and web are unaffected.
 
 * `npm install @dvsa/capacitor-plugin-msauth`
 * `npx cap sync`
+* (iOS) This plugin supports **Swift Package Manager (SPM) only** (CocoaPods support was removed in v4). Your iOS project must use SPM: create it with `npx cap add ios --packagemanager SPM`, or migrate an existing CocoaPods project with `npx cap spm-migration-assistant`. `npx cap sync` adds the plugin to your app's `CapApp-SPM` package automatically. See the [Capacitor SPM docs](https://capacitorjs.com/docs/ios/spm).
 * Create an app registration
 * In the app registration, go to Authentication, and then Add platform, and then iOS/macOS
 * You will be asked for a bundle identifier, which you can find in Xcode (under the General tab of your project)
