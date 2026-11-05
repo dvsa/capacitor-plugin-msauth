@@ -8,6 +8,7 @@ amended to include the ability to force a token refresh when calling the MSAL `a
 
 * `npm install @dvsa/capacitor-plugin-msauth`
 * `npx cap sync`
+* (iOS) Both CocoaPods and Swift Package Manager (SPM) are supported. SPM requires a Capacitor 8 iOS project created/migrated with SPM (`npx cap add ios --packagemanager SPM` or `npx cap spm-migration-assistant`); `cap sync` adds the plugin to your app's `CapApp-SPM` package automatically. See the [Capacitor SPM docs](https://capacitorjs.com/docs/ios/spm).
 * Create an app registration
 * In the app registration, go to Authentication, and then Add platform, and then iOS/macOS
 * You will be asked for a bundle identifier, which you can find in Xcode (under the General tab of your project)

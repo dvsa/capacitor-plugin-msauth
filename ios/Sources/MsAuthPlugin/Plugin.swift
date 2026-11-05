@@ -7,7 +7,14 @@ import MSAL
  * here: https://capacitorjs.com/docs/plugins/ios
  */
 @objc(MsAuthPlugin)
-public class MsAuthPlugin: CAPPlugin {
+public class MsAuthPlugin: CAPPlugin, CAPBridgedPlugin {
+    public let identifier = "MsAuthPlugin"
+    public let jsName = "MsAuthPlugin"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "login", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "logout", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "logoutAll", returnType: CAPPluginReturnPromise)
+    ]
     @objc func login(_ call: CAPPluginCall) {
         guard let context = createContextFromPluginCall(call) else {
             call.reject("Unable to create context, check logs")
