@@ -30,7 +30,7 @@
 ## Integration points and dependencies
 - NPM runtime dependency: `@azure/msal-browser` (web implementation in `src/web.ts`).
 - Android dependency: `com.microsoft.identity.client:msal` in `android/build.gradle`; includes required Microsoft Duo Maven feed.
-- iOS dependency: `MSAL` SwiftPM package (`microsoft-authentication-library-for-objc`) in root `Package.swift` (deployment target iOS 15). iOS is SPM-only; no podspec. Sources live in `ios/Sources/DvsaCapacitorPluginMsauth`.
+- iOS dependency: `MSAL` SwiftPM package (`microsoft-authentication-library-for-objc`, MSAL 2.16.0+) in root `Package.swift` (deployment target iOS 17). iOS is SPM-only; no podspec. Sources live in `ios/Sources/DvsaCapacitorPluginMsauth`.
 - Swift package, product and target are all named `DvsaCapacitorPluginMsauth`: the Capacitor CLI derives this name from the npm package name, and consumer AppDelegates `import DvsaCapacitorPluginMsauth`. Do not rename.
 - Consumer app setup is required for URL schemes and platform manifest/plist entries; use `README.md` as source of truth.
 

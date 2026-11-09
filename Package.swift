@@ -3,15 +3,15 @@ import PackageDescription
 
 let package = Package(
     name: "DvsaCapacitorPluginMsauth",
-    platforms: [.iOS(.v15)],
+    platforms: [.iOS(.v17)],
     products: [
         .library(
             name: "DvsaCapacitorPluginMsauth",
             targets: ["DvsaCapacitorPluginMsauth"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", from: "8.0.0"),
-        .package(url: "https://github.com/AzureAD/microsoft-authentication-library-for-objc.git", from: "1.7.0")
+        .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", from: "8.6.0"),
+        .package(url: "https://github.com/AzureAD/microsoft-authentication-library-for-objc.git", from: "2.16.0")
     ],
     targets: [
         .target(
